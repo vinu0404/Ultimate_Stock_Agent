@@ -6,3 +6,4 @@ pandas
 ta
 matplotlib
 nest_asyncio
+langchain
