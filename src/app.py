@@ -130,15 +130,15 @@ def plot_trends(df, ticker):
     plt.style.use('dark_background')
     
     plt.subplot(2, 1, 1)
-    plt.plot(df.index, df["Close"], label="Close Price", color="#00BFFF")
-    plt.plot(df.index, df["SMA20"], label="SMA20", color="#FF9500")
-    plt.plot(df.index, df["SMA50"], label="SMA50", color="#32CD32")
+    plt.plot(df.index, df["Close"], label="Close Price", color="#00BFFF")  # Fixed: df.index instead of df intelligence
+    plt.plot(df.index, df["SMA20"], label="SMA20", color="#FF9500")  # Fixed: df.index
+    plt.plot(df.index, df["SMA50"], label="SMA50", color="#32CD32")  # Fixed: df.index
     plt.title(f"{ticker} Stock Price and SMAs", fontsize=14, pad=10, color="white")
     plt.legend(facecolor="#333333")
     plt.grid(alpha=0.2)
     
     plt.subplot(2, 1, 2)
-    plt.plot(df.index, df["RSI"], label="RSI", color="#FF6B6B")
+    plt.plot(df.index, df["RSI"], label="RSI", color="#FF6B6B")  # Fixed: df.index
     plt.axhline(70, color="#FF9500", linestyle="--", alpha=0.5)
     plt.axhline(30, color="#32CD32", linestyle="--", alpha=0.5)
     plt.title("RSI", fontsize=14, pad=10, color="white")
@@ -253,7 +253,7 @@ async def analyze_stock(ticker, initial_capital, strategy, risk_tolerance):
 # Streamlit UI with improved styling
 st.set_page_config(page_title="Stock Analysis App", layout="wide")
 
-# Custom CSS for improved UI
+# Custom CSS for improved UI with dropdown visibility fix
 st.markdown("""
     <style>
     /* Main background and text colors */
@@ -302,11 +302,44 @@ st.markdown("""
     }
     
     /* Input field styling */
-    .stTextInput>div>div>input, .stNumberInput>div>div>input, .stSelectbox>div>div>div {
+    .stTextInput>div>div>input, .stNumberInput>div>div>input {
         background-color: #333333;
         color: #f0f0f0;
         border: 1px solid #555555;
         border-radius: 5px;
+    }
+    
+    /* Selectbox (dropdown) styling to fix black visibility */
+    .stSelectbox [data-baseweb="select"] {
+        background-color: #333333 !important;
+        color: #f0f0f0 !important;
+        border: 1px solid #555555 !important;
+        border-radius: 5px !important;
+    }
+    
+    .stSelectbox [data-baseweb="select"] > div {
+        background-color: #333333 !important;
+        color: #f0f0f0 !important;
+    }
+    
+    .stSelectbox [data-baseweb="select"] span {
+        color: #f0f0f0 !important;
+    }
+    
+    /* Dropdown menu items */
+    .stSelectbox [data-baseweb="menu"] {
+        background-color: #1E1E1E !important;
+        color: #f0f0f0 !important;
+    }
+    
+    .stSelectbox [data-baseweb="menu"] li {
+        color: #f0f0f0 !important;
+        background-color: #1E1E1E !important;
+    }
+    
+    .stSelectbox [data-baseweb="menu"] li:hover {
+        background-color: #2A2A2A !important;
+        color: #00BFFF !important;
     }
     
     /* Label styling */
@@ -418,7 +451,7 @@ if analyze_button:
             with col1:
                 st.markdown("<div class='card'>", unsafe_allow_html=True)
                 st.markdown("<h2>Technical Analysis</h2>", unsafe_allow_html=True)
-                st.image(plot_file, caption=f"{ticker} Trend Analysis", use_column_width=True)
+                st.image(plot_file, caption=f"{ticker} Trend Analysis", use_container_width=True)
                 
                 # Technical Indicators section
                 st.markdown("<h3>Technical Indicators</h3>", unsafe_allow_html=True)
